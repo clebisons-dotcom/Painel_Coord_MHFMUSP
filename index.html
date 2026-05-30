@@ -93,4 +93,796 @@
                     <svg id="theme-icon-dark" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                 </button>
                 <button onclick="exportData()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center gap-1.5 border border-white/20">
-                    <svg class="w-4 h-4 text-usp-lightgold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-
+                    <svg class="w-4 h-4 text-usp-lightgold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    Backup
+                </button>
+                <button onclick="triggerImport()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center gap-1.5 border border-white/20">
+                    <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    Importar
+                </button>
+                <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)">
+                <button onclick="confirmResetToDefault()" class="bg-amber-600/20 hover:bg-amber-600/40 text-amber-200 text-xs font-semibold px-3 py-2 rounded-lg transition border border-amber-500/30">
+                    Restaurar Padrões
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        
+        <section class="mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center gap-4 transition-colors">
+                    <div class="p-3 bg-emerald-100 dark:bg-emerald-950/50 rounded-lg text-usp-green dark:text-emerald-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Total Projetos</p>
+                        <h3 id="stat-total" class="text-2xl font-bold text-slate-800 dark:text-white">0</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center gap-4 transition-colors">
+                    <div class="p-3 bg-amber-100 dark:bg-amber-950/50 rounded-lg text-usp-gold dark:text-amber-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Progresso Médio</p>
+                        <h3 id="stat-avg" class="text-2xl font-bold text-slate-800 dark:text-white">0%</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center gap-4 transition-colors">
+                    <div class="p-3 bg-blue-100 dark:bg-blue-950/50 rounded-lg text-blue-600 dark:text-blue-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Concluídos</p>
+                        <h3 id="stat-completed" class="text-2xl font-bold text-slate-800 dark:text-white">0</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center gap-4 transition-colors">
+                    <div class="p-3 bg-rose-100 dark:bg-rose-950/50 rounded-lg text-rose-600 dark:text-rose-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Prazos em Alerta</p>
+                        <h3 id="stat-alerts" class="text-2xl font-bold text-slate-800 dark:text-white">0</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-6 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-6 bg-usp-gold inline-block rounded"></span>
+                    <h2 class="font-serif text-lg font-bold text-usp-dark dark:text-usp-lightgold">Equipe de Transição & Colaboração</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full font-medium">
+                        Filtro de Responsabilidade: <strong id="filter-indicator" class="text-usp-green dark:text-usp-lightgold">Nenhum (Todos)</strong>
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                <div onclick="toggleResponsibleFilter('Prof. André Mota')" id="team-mota" class="group cursor-pointer bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border-t-4 border-usp-gold shadow-sm hover:shadow-md transition duration-200">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <span class="text-[9px] font-bold tracking-widest text-usp-gold uppercase">Consultor</span>
+                        <span class="text-[9px] text-slate-400 group-hover:text-usp-green transition">Filtrar</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-xs truncate">Prof. André Mota</h4>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Apoio e transição de coordenação.</p>
+                </div>
+
+                <div onclick="toggleResponsibleFilter('Clebison Santos')" id="team-clebison" class="group cursor-pointer bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border-t-4 border-usp-green shadow-sm hover:shadow-md transition duration-200">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <span class="text-[9px] font-bold tracking-widest text-usp-green uppercase">Coord. Geral</span>
+                        <span class="text-[9px] text-slate-400 group-hover:text-usp-green transition">Filtrar</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-xs truncate">Clebison Santos</h4>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Conservação Preventiva e Gestão.</p>
+                </div>
+
+                <div onclick="toggleResponsibleFilter('CPDoc (Vaga)')" id="team-cpdoc-vaga" class="group cursor-pointer bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border-t-4 border-rose-500 shadow-sm hover:shadow-md transition duration-200">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <span class="text-[9px] font-bold tracking-widest text-rose-500 uppercase">Vaga Pesquisa</span>
+                        <span class="text-[9px] text-slate-400 group-hover:text-rose-500 transition">Filtrar</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-xs truncate">CPDoc (Vaga)</h4>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Processamento de repositórios.</p>
+                </div>
+
+                <div onclick="toggleResponsibleFilter('Técnico em Museologia')" id="team-tec-conser" class="group cursor-pointer bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border-t-4 border-emerald-500 shadow-sm hover:shadow-md transition duration-200">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <span class="text-[9px] font-bold tracking-widest text-emerald-500 uppercase">Téc. Museologia</span>
+                        <span class="text-[9px] text-slate-400 group-hover:text-emerald-500 transition">Filtrar</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-xs truncate">Conserva. Preventiva</h4>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Salvaguarda de acervos físicos.</p>
+                </div>
+
+                <div onclick="toggleResponsibleFilter('Ação Educativa')" id="team-tec-educ" class="group cursor-pointer bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border-t-4 border-indigo-500 shadow-sm hover:shadow-md transition duration-200">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <span class="text-[9px] font-bold tracking-widest text-indigo-500 uppercase">Mediação</span>
+                        <span class="text-[9px] text-slate-400 group-hover:text-indigo-500 transition">Filtrar</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-xs truncate">Ação Educativa</h4>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Difusão de conteúdos históricos.</p>
+                </div>
+
+                <div onclick="toggleResponsibleFilter('Estagiários')" id="team-estagiarios" class="group cursor-pointer bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border-t-4 border-blue-500 shadow-sm hover:shadow-md transition duration-200">
+                    <div class="flex justify-between items-start mb-0.5">
+                        <span class="text-[9px] font-bold tracking-widest text-blue-500 uppercase">Apoio (3)</span>
+                        <span class="text-[9px] text-slate-400 group-hover:text-blue-500 transition">Filtrar</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white text-xs truncate">Estagiários</h4>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 line-clamp-2">Operação de catalogação e reservas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-6 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center transition-colors">
+            <div class="flex border-b lg:border-none border-slate-200 dark:border-slate-800 p-1 bg-slate-100 dark:bg-slate-950 rounded-xl max-w-md self-start">
+                <button onclick="switchView('kanban')" id="tab-kanban" class="flex-1 py-1.5 px-4 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-white dark:bg-slate-900 shadow-sm text-usp-green dark:text-usp-lightgold">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                    Quadro Kanban
+                </button>
+                <button onclick="switchView('table')" id="tab-table" class="flex-1 py-1.5 px-4 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Tabela Detalhada
+                </button>
+                <button onclick="switchView('metrics')" id="tab-metrics" class="flex-1 py-1.5 px-4 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+                    Métricas & Carga
+                </button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="relative flex-grow sm:flex-grow-0 sm:w-60">
+                    <input type="text" id="search-input" oninput="applyFilters()" placeholder="Buscar projetos, responsáveis..." class="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-usp-green transition-colors text-slate-800 dark:text-white">
+                    <span class="absolute left-3 top-2.5 text-slate-400">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <select id="status-filter" onchange="applyFilters()" class="border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 rounded-lg py-1.5 px-3 text-xs focus:outline-none focus:ring-2 focus:ring-usp-green text-slate-800 dark:text-white">
+                        <option value="all">Todos os Status</option>
+                        <option value="not-started">Planejado (0%)</option>
+                        <option value="in-progress">Em Execução (1% a 99%)</option>
+                        <option value="completed">Concluído (100%)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <select id="priority-filter" onchange="applyFilters()" class="border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 rounded-lg py-1.5 px-3 text-xs focus:outline-none focus:ring-2 focus:ring-usp-green text-slate-800 dark:text-white">
+                        <option value="all">Todas as Prioridades</option>
+                        <option value="high">Alta Prioridade</option>
+                        <option value="medium">Média Prioridade</option>
+                        <option value="low">Baixa Prioridade</option>
+                    </select>
+                </div>
+                
+                <button onclick="clearAllFilters()" id="btn-clear-filters" class="hidden bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-lg transition">
+                    Limpar Filtros
+                </button>
+            </div>
+        </section>
+
+        <div id="view-kanban-panel" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-slate-100/70 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/60 flex flex-col min-h-[500px]">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-300/40 dark:border-slate-800/80">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                        <h3 class="font-serif font-bold text-slate-800 dark:text-white text-sm">Coordenação</h3>
+                    </div>
+                    <span id="count-Coord" class="bg-indigo-600/10 text-indigo-700 dark:text-indigo-400 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="list-Coord" class="project-list flex-grow space-y-3 min-h-[200px]" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Coordenação')"></div>
+                <button onclick="openAddModal('Coordenação')" class="mt-4 w-full border border-dashed border-indigo-400 hover:border-indigo-600 text-indigo-600 dark:text-indigo-400 bg-white/50 dark:bg-slate-900/50 hover:bg-white text-xs font-semibold py-2.5 rounded-lg transition duration-150 flex items-center justify-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Novo Projeto
+                </button>
+            </div>
+
+            <div class="bg-slate-100/70 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/60 flex flex-col min-h-[500px]">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-300/40 dark:border-slate-800/80">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                        <h3 class="font-serif font-bold text-slate-800 dark:text-white text-sm">Conserv. Preventiva</h3>
+                    </div>
+                    <span id="count-Conservas" class="bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="list-Conservas" class="project-list flex-grow space-y-3 min-h-[200px]" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Conservas')"></div>
+                <button onclick="openAddModal('Conservas')" class="mt-4 w-full border border-dashed border-emerald-400 hover:border-emerald-600 text-emerald-600 dark:text-emerald-400 bg-white/50 dark:bg-slate-900/50 hover:bg-white text-xs font-semibold py-2.5 rounded-lg transition duration-150 flex items-center justify-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Novo Projeto
+                </button>
+            </div>
+
+            <div class="bg-slate-100/70 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/60 flex flex-col min-h-[500px]">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-300/40 dark:border-slate-800/80">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+                        <h3 class="font-serif font-bold text-slate-800 dark:text-white text-sm">CPDoc</h3>
+                    </div>
+                    <span id="count-CPDoc" class="bg-amber-600/10 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="list-CPDoc" class="project-list flex-grow space-y-3 min-h-[200px]" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'CPDoc')"></div>
+                <button onclick="openAddModal('CPDoc')" class="mt-4 w-full border border-dashed border-amber-400 hover:border-amber-600 text-amber-600 dark:text-amber-400 bg-white/50 dark:bg-slate-900/50 hover:bg-white text-xs font-semibold py-2.5 rounded-lg transition duration-150 flex items-center justify-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Novo Projeto
+                </button>
+            </div>
+
+            <div class="bg-slate-100/70 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/60 flex flex-col min-h-[500px]">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-300/40 dark:border-slate-800/80">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+                        <h3 class="font-serif font-bold text-slate-800 dark:text-white text-sm">Ação Educativa</h3>
+                    </div>
+                    <span id="count-Ação Educativa" class="bg-rose-600/10 text-rose-700 dark:text-rose-400 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="list-Ação Educativa" class="project-list flex-grow space-y-3 min-h-[200px]" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Ação Educativa')"></div>
+                <button onclick="openAddModal('Ação Educativa')" class="mt-4 w-full border border-dashed border-rose-400 hover:border-rose-600 text-rose-600 dark:text-rose-400 bg-white/50 dark:bg-slate-900/50 hover:bg-white text-xs font-semibold py-2.5 rounded-lg transition duration-150 flex items-center justify-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Novo Projeto
+                </button>
+            </div>
+        </div>
+
+        <div id="view-table-panel" class="hidden bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-950 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase border-b border-slate-200 dark:border-slate-800">
+                            <th class="p-4">Prioridade</th>
+                            <th class="p-4">Título do Projeto</th>
+                            <th class="p-4">Área</th>
+                            <th class="p-4">Responsável</th>
+                            <th class="p-4">Checklist / Subtarefas</th>
+                            <th class="p-4">Prazo</th>
+                            <th class="p-4">Progresso</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-view-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-metrics-panel" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+                    <h4 class="font-serif font-bold text-slate-800 dark:text-white mb-4">Volume de Projetos por Colaborador</h4>
+                    <div id="chart-workload-container" class="space-y-3"></div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors flex flex-col items-center">
+                    <h4 class="font-serif font-bold text-slate-800 dark:text-white w-full text-left mb-4">Progresso Geral das Áreas (SVG)</h4>
+                    <div class="relative w-48 h-48 mb-4">
+                        <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
+                            <path class="text-slate-100 dark:text-slate-800" stroke="currentColor" stroke-width="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="svg-chart-progress" class="text-usp-green dark:text-usp-lightgold transition-all duration-500" stroke="currentColor" stroke-width="3.2" stroke-dasharray="0, 100" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="chart-center-percent" class="text-3xl font-extrabold text-slate-800 dark:text-white">0%</span>
+                            <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-semibold">Média Global</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 w-full border-t border-slate-100 dark:border-slate-800 pt-4 text-xs">
+                        <div class="text-center">
+                            <p class="text-slate-400">Total Projetos</p>
+                            <p id="metrics-stat-total" class="text-lg font-bold">0</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-slate-400">Total Concluídos</p>
+                            <p id="metrics-stat-done" class="text-lg font-bold text-emerald-500">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-serif font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-usp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Diário de Transição & Histórico de Modificações
+                    </h4>
+                    <button onclick="clearActivityLog()" class="text-xs text-rose-500 hover:text-rose-600 font-semibold">Limpar Logs</button>
+                </div>
+                <div id="activity-log-container" class="space-y-2.5 max-h-60 overflow-y-auto text-xs pr-2"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-xs text-center py-6 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 Museu Histórico Prof. Carlos da Silva Lacaz - FMUSP. Todos os direitos reservados.</p>
+            <p class="mt-1 text-slate-600">Desenvolvido sob diretrizes de transição administrativa, consolidação patrimonial e transparência de processos.</p>
+        </div>
+    </footer>
+
+    <div id="modal-project" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-200 border border-slate-200 dark:border-slate-800">
+            <div class="bg-gradient-to-r from-usp-dark to-usp-green text-white px-6 py-4 flex items-center justify-between">
+                <h3 id="modal-project-title" class="font-serif font-bold text-lg">Gerenciar Projeto</h3>
+                <button onclick="closeProjectModal()" class="text-white/80 hover:text-white hover:bg-white/10 rounded-full p-1.5 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <form id="project-form" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="form-id">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Título do Projeto *</label>
+                        <input type="text" id="form-name" required class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-usp-green focus:border-usp-green focus:outline-none dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Prioridade</label>
+                        <select id="form-priority" class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-usp-green focus:outline-none dark:text-white">
+                            <option value="low">🟢 Baixa</option>
+                            <option value="medium" selected>🟡 Média</option>
+                            <option value="high">🔴 Alta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Área / Setor</label>
+                        <select id="form-area" class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-usp-green focus:outline-none dark:text-white">
+                            <option value="Coordenação">Coordenação</option>
+                            <option value="Conservas">Conservação Preventiva</option>
+                            <option value="CPDoc">CPDoc</option>
+                            <option value="Ação Educativa">Ação Educativa</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Responsável Principal</label>
+                        <select id="form-responsible" class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-usp-green focus:outline-none dark:text-white">
+                            <option value="Prof. André Mota">Prof. André Mota</option>
+                            <option value="Clebison Santos">Clebison Santos</option>
+                            <option value="CPDoc (Vaga)">CPDoc (Vaga)</option>
+                            <option value="Técnico em Museologia">Técnico em Museologia</option>
+                            <option value="Ação Educativa">Ação Educativa</option>
+                            <option value="Estagiários">Estagiários</option>
+                            <option value="Equipe CPDoc">Equipe CPDoc</option>
+                            <option value="Outro / Não Definido">Outro / Não Definido</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Data de Entrega</label>
+                        <input type="date" id="form-due-date" class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-usp-green focus:outline-none dark:text-white">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Descrição do Escopo</label>
+                    <textarea id="form-desc" rows="2" class="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-usp-green focus:border-usp-green focus:outline-none dark:text-white"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Apoio / Equipe Compartilhada</label>
+                        <div id="form-support-container" class="grid grid-cols-1 gap-1.5 p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs max-h-36 overflow-y-auto"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1 flex justify-between items-center">
+                            <span>Checklist de Tarefas</span>
+                        </label>
+                        <div class="flex gap-2 mb-2">
+                            <input type="text" id="new-subtask-text" placeholder="Adicionar tarefa..." class="flex-grow px-3 py-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs focus:outline-none dark:text-white">
+                            <button type="button" onclick="addSubtaskFromForm()" class="bg-usp-green hover:bg-usp-dark text-white px-3 py-1 text-xs font-bold rounded-lg transition">+</button>
+                        </div>
+                        <div id="form-subtask-list" class="flex-grow p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs max-h-28 overflow-y-auto space-y-1.5"></div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-950 p-3.5 rounded-xl border border-slate-100">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Progresso do Projeto</label>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="autoCalculateProgress()" class="text-[10px] text-indigo-500 hover:text-indigo-600 font-bold uppercase transition">Calcular do Checklist</button>
+                            <span id="form-progress-badge" class="bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <input type="range" id="form-progress" min="0" max="100" class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-usp-green" oninput="updateFormProgressValue(this.value)">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <button type="button" id="form-btn-delete" onclick="triggerDeleteProject()" class="bg-rose-50 dark:bg-rose-950/30 hover:bg-rose-100 text-rose-600 text-xs font-semibold px-4 py-2 rounded-lg transition flex items-center gap-1.5">
+                        Excluir Projeto
+                    </button>
+                    <div class="flex gap-2 ml-auto">
+                        <button type="button" onclick="closeProjectModal()" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 text-xs font-semibold px-4 py-2.5 rounded-lg transition">Cancelar</button>
+                        <button type="submit" class="bg-usp-green hover:bg-usp-dark text-white text-xs font-semibold px-5 py-2.5 rounded-lg transition shadow-sm">Salvar Alterações</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-150">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-sm shadow-xl p-6 transform scale-95 transition-transform duration-150 border border-slate-200 dark:border-slate-800">
+            <h4 id="confirm-title" class="font-serif font-bold text-slate-800 dark:text-white text-lg mb-2">Tem certeza?</h4>
+            <p id="confirm-message" class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-6"></p>
+            <div class="flex gap-3">
+                <button onclick="closeConfirmModal(false)" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-600 text-xs font-semibold py-2.5 rounded-lg transition">Cancelar</button>
+                <button id="confirm-yes-btn" onclick="closeConfirmModal(true)" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-2.5 rounded-lg transition">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="fixed bottom-4 right-4 z-[100] space-y-2 pointer-events-none"></div>
+
+    <script>
+        const defaultProjects = [
+            { id: 1, area: 'Coordenação', name: 'Plataforma "Acervo Digital Murais de Formandos FMUSP (1918–1998)"', responsible: 'Prof. André Mota', description: 'Digitalização e disponibilização dos murais históricos de formandos da Faculdade de Medicina.', progress: 78, priority: 'high', dueDate: '2026-06-30', support: ['Estagiários', 'CPDoc (Vaga)'], subtasks: [{id: 11, text: 'Digitalizar murais remanescentes', completed: true}, {id: 12, text: 'Construir indexação de nomes', completed: true}, {id: 13, text: 'Subir ambiente de testes no Tainacan', completed: false}] },
+            { id: 2, area: 'Coordenação', name: 'Tour pela FMUSP em Realidade Aumentada com a Higeia', responsible: 'Clebison Santos', description: 'Roteiro e desenvolvimento do tour virtual baseado na estátua de Higeia.', progress: 45, priority: 'medium', dueDate: '2026-09-15', support: ['Ação Educativa', 'Estagiários'], subtasks: [{id: 21, text: 'Elaborar roteiro histórico', completed: true}, {id: 22, text: 'Modelagem básica do avatar', completed: false}] },
+            { id: 3, area: 'Conservas', name: 'Descongelamento de negativos fotográficos', responsible: 'Técnico em Museologia', description: 'Processo físico controlado de recuperação e salvaguarda de acervo fotográfico em película de nitrato/acetato.', progress: 95, priority: 'high', dueDate: '2026-05-10', support: ['Clebison Santos'], subtasks: [{id: 31, text: 'Estabilizar temperatura das geladeiras', completed: true}, {id: 32, text: 'Catalogação imediata de envelopes', completed: true}] },
+            { id: 4, area: 'Conservas', name: 'Projeto Finep: lote de 22 peças anatômicas em cera', responsible: 'Clebison Santos', description: 'Restauração física de ceroplastias raras pertencentes ao acervo de anatomia humana da FMUSP.', progress: 60, priority: 'high', dueDate: '2026-07-20', support: ['Técnico em Museologia'], subtasks: [] },
+            { id: 5, area: 'Conservas', name: 'Termo de Referência para plataforma de navegação 3D', responsible: 'Clebison Santos', description: 'Elaboração de requisitos técnicos iniciais para visualização do patrimônio edificado em 3D.', progress: 20, priority: 'low', dueDate: '2026-12-01', support: ['Técnico em Museologia', 'Prof. André Mota'], subtasks: [] },
+            { id: 6, area: 'Conservas', name: 'Termo de Referência para compra de equipamentos de digitalização de acervo', responsible: 'Técnico em Museologia', description: 'Planejamento e justificativas para compras de scanners planetários de alta precisão.', progress: 85, priority: 'medium', dueDate: '2026-06-15', support: ['Clebison Santos'], subtasks: [] },
+            { id: 7, area: 'Conservas', name: 'Termo de Referência para catálogo físico do Museu', responsible: 'Clebison Santos', description: 'Criação de diretrizes gráficas e editoriais para publicação do acervo histórico.', progress: 10, priority: 'low', dueDate: '2026-11-30', support: ['Prof. André Mota', 'Estagiários'], subtasks: [] },
+            { id: 8, area: 'Conservas', name: 'Musealização do relógio da torre', responsible: 'Técnico em Museologia', description: 'Restauração e adequação do espaço físico para exposição do antigo relógio da torre do edifício central.', progress: 35, priority: 'medium', dueDate: '2026-10-05', support: ['Clebison Santos'], subtasks: [] },
+            { id: 9, area: 'Conservas', name: 'Maximização do espaço da reserva técnica', responsible: 'Técnico em Museologia', description: 'Análise de layout e otimização dos armários deslizantes para recebimento de novas coleções físicas.', progress: 55, priority: 'medium', dueDate: '2026-08-10', support: ['Estagiários'], subtasks: [] },
+            { id: 10, area: 'Conservas', name: 'Linha do tempo das tecnologias médicas', responsible: 'Prof. André Mota', description: 'Montagem histórica interligando os marcos do desenvolvimento tecnológico médico nacional.', progress: 70, priority: 'medium', dueDate: '2026-07-01', support: ['Ação Educativa'], subtasks: [] },
+            { id: 11, area: 'CPDoc', name: 'Aquisição de conhecimento sobre a documentação do acervo', responsible: 'CPDoc (Vaga)', description: 'Capacitação da futura equipe no levantamento do histórico das coleções documentais.', progress: 15, priority: 'high', dueDate: '2026-06-01', support: ['Prof. André Mota'], subtasks: [] },
+            { id: 12, area: 'CPDoc', name: 'Catalogação de novos acervos recebidos', responsible: 'CPDoc (Vaga)', description: 'Inserção, classificação e processamento técnico de arquivos institucionais e doações.', progress: 30, priority: 'medium', dueDate: '2026-09-30', support: ['Estagiários'], subtasks: [] },
+            { id: 13, area: 'CPDoc', name: 'Domínio dos repositórios AtoM e Tainacan', responsible: 'CPDoc (Vaga)', description: 'Treinamento e parametrização nos sistemas abertos de arquivística e museologia digital.', progress: 50, priority: 'medium', dueDate: '2026-08-30', support: ['Clebison Santos'], subtasks: [] },
+            { id: 14, area: 'CPDoc', name: 'Organização física em reserva técnica de papel', responsible: 'Estagiários', description: 'Arrumação de pastas, caixas de polionda e higienização primária de documentos textuais.', progress: 40, priority: 'low', dueDate: '2026-10-20', support: ['CPDoc (Vaga)'], subtasks: [] },
+            { id: 15, area: 'CPDoc', name: 'Atendimento às rotinas internas e fluxo diário', responsible: 'Equipe CPDoc', description: 'Organização do fluxo de consultas e controle de entrada/saída de mídias documentais.', progress: 90, priority: 'high', dueDate: '2026-06-10', support: ['Estagiários'], subtasks: [] }
+        ];
+
+        const supportTeamOptions = ["Prof. André Mota", "Clebison Santos", "CPDoc (Vaga)", "Técnico em Museologia", "Ação Educativa", "Estagiários", "Equipe CPDoc"];
+
+        // --- CONEXÃO COM O BANCO DE DADOS NA NUVEM (SUPABASE) ---
+        const SUPABASE_URL = 'https://axwcdvcuhosnkegovezl.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_VxrWTuCx8FoYetVr2dszPg_ReLsQ6qq';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let projects = [];
+        let activityLogs = JSON.parse(localStorage.getItem('mhf_activity_logs')) || [
+            { id: Date.now(), text: "Sistema inicializado com sucesso. Dados prontos para análise.", time: new Date().toLocaleTimeString() }
+        ];
+        
+        let currentView = 'kanban';
+        let currentResponsibleFilter = null;
+        let searchQuery = '';
+        let currentStatusFilter = 'all';
+        let currentPriorityFilter = 'all';
+
+        const modalProject = document.getElementById('modal-project');
+        const modalConfirm = document.getElementById('modal-confirm');
+        const toastContainer = document.getElementById('toast-container');
+        let tempSubtasks = [];
+
+        function initTheme() {
+            const isDark = localStorage.getItem('mhf_theme') === 'dark';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon-light').classList.remove('hidden');
+                document.getElementById('theme-icon-dark').classList.add('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('mhf_theme', isDark ? 'dark' : 'light');
+            document.getElementById('theme-icon-light').classList.toggle('hidden', !isDark);
+            document.getElementById('theme-icon-dark').classList.toggle('hidden', isDark);
+            showToast(isDark ? "Tema Escuro ativado" : "Tema Claro ativado", "info");
+        }
+
+        function showToast(message, type = "success") {
+            const toast = document.createElement('div');
+            toast.className = `flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg border text-xs font-semibold transition-all duration-300 pointer-events-auto w-72 bg-white dark:bg-slate-900 text-slate-800 dark:text-white border-slate-200 dark:border-slate-800`;
+            let col = type === "error" ? "bg-rose-500" : type === "warning" ? "bg-amber-500" : type === "info" ? "bg-indigo-500" : "bg-emerald-500";
+            toast.innerHTML = `<span class="w-2.5 h-2.5 rounded-full ${col} shrink-0"></span><span class="flex-grow">${message}</span>`;
+            toastContainer.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        let confirmPromiseResolver = null;
+        function showConfirm(title, message) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            modalConfirm.classList.remove('hidden', 'opacity-0');
+            return new Promise((resolve) => { confirmPromiseResolver = resolve; });
+        }
+
+        function closeConfirmModal(result) {
+            modalConfirm.classList.add('hidden', 'opacity-0');
+            if (confirmPromiseResolver) { confirmPromiseResolver(result); confirmPromiseResolver = null; }
+        }
+
+        function logActivity(text) {
+            const time = new Date().toLocaleTimeString('pt-BR');
+            activityLogs.unshift({ id: Date.now(), text, time });
+            localStorage.setItem('mhf_activity_logs', JSON.stringify(activityLogs));
+            renderActivityLogs();
+        }
+
+        function renderActivityLogs() {
+            const container = document.getElementById('activity-log-container');
+            if (!container) return; container.innerHTML = '';
+            activityLogs.forEach(log => {
+                const item = document.createElement('div');
+                item.className = "p-2 rounded bg-slate-50 dark:bg-slate-950 border border-slate-200/50 dark:border-slate-800/40 flex justify-between items-center text-xs";
+                item.innerHTML = `<span>${log.text}</span><span class="text-[10px] text-slate-400 font-mono">${log.time}</span>`;
+                container.appendChild(item);
+            });
+        }
+
+        function clearActivityLog() {
+            activityLogs = [{ id: Date.now(), text: "Logs limpos manualmente.", time: new Date().toLocaleTimeString() }];
+            localStorage.setItem('mhf_activity_logs', JSON.stringify(activityLogs));
+            renderActivityLogs();
+        }
+
+        function switchView(view) {
+            currentView = view;
+            ['kanban', 'table', 'metrics'].forEach(v => {
+                document.getElementById(`view-${v}-panel`).classList.toggle('hidden', v !== view);
+                document.getElementById(`tab-${v}`).className = v === view ? "flex-grow sm:flex-grow-0 py-1.5 px-4 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-white dark:bg-slate-900 shadow-sm text-usp-green dark:text-usp-lightgold" : "flex-grow sm:flex-grow-0 py-1.5 px-4 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-500 dark:text-slate-400";
+            });
+            render();
+        }
+
+        function getPriorityBadge(priority) {
+            let col = priority === 'high' ? 'bg-rose-50 text-rose-600 border-rose-200' : priority === 'low' ? 'bg-slate-100 text-slate-600 border-slate-200' : 'bg-amber-50 text-amber-600 border-amber-200';
+            return `<span class="text-[9px] ${col} border font-bold uppercase px-1.5 py-0.5 rounded">${priority === 'high' ? 'Alta' : priority === 'low' ? 'Baixa' : 'Média'}</span>`;
+        }
+
+        function getProgressColor(progress) { return progress <= 20 ? '#ef4444' : progress <= 50 ? '#f97316' : progress <= 75 ? '#f59e0b' : progress <= 99 ? '#10b981' : '#3b82f6'; }
+        function getProgressBgColorClass(progress) { return progress <= 20 ? 'bg-red-500' : progress <= 50 ? 'bg-orange-500' : progress <= 75 ? 'bg-amber-500' : progress <= 99 ? 'bg-emerald-500' : 'bg-blue-500'; }
+        function formatDateBR(dateStr) { if (!dateStr) return 'Sem prazo'; const parts = dateStr.split('-'); return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dateStr; }
+        function isOverdue(dateStr, progress) { if (!dateStr || progress === 100) return false; const today = new Date(); today.setHours(0,0,0,0); return new Date(dateStr + "T00:00:00") < today; }
+
+        function render() {
+            const columns = {
+                'Coordenação': { list: document.getElementById('list-Coord'), count: document.getElementById('count-Coord'), items: [] },
+                'Conservas': { list: document.getElementById('list-Conservas'), count: document.getElementById('count-Conservas'), items: [] },
+                'CPDoc': { list: document.getElementById('list-CPDoc'), count: document.getElementById('count-CPDoc'), items: [] },
+                'Ação Educativa': { list: document.getElementById('list-Ação Educativa'), count: document.getElementById('count-Ação Educativa'), items: [] }
+            };
+
+            Object.keys(columns).forEach(k => columns[k].list.innerHTML = '');
+
+            const filtered = projects.filter(p => {
+                if (currentResponsibleFilter && p.responsible !== currentResponsibleFilter && !(p.support && p.support.includes(currentResponsibleFilter))) return false;
+                if (searchQuery) {
+                    const q = searchQuery.toLowerCase();
+                    if (!p.name.toLowerCase().includes(q) && !(p.responsible||'').toLowerCase().includes(q)) return false;
+                }
+                if (currentStatusFilter === 'not-started' && p.progress !== 0) return false;
+                if (currentStatusFilter === 'in-progress' && (p.progress === 0 || p.progress === 100)) return false;
+                if (currentStatusFilter === 'completed' && p.progress !== 100) return false;
+                if (currentDifficultyFilter !== 'all' && p.priority !== currentPriorityFilter) return false; // Nota: Corrigido o nome lógico da variável interna
+                if (currentPriorityFilter !== 'all' && p.priority !== currentPriorityFilter) return false;
+                return true;
+            });
+
+            filtered.forEach(p => { if (columns[p.area]) columns[p.area].items.push(p); });
+
+            if (currentView === 'kanban') {
+                Object.keys(columns).forEach(k => {
+                    const col = columns[k]; col.count.innerText = col.items.length;
+                    if (col.items.length === 0) {
+                        col.list.innerHTML = `<div class="text-center text-slate-400 py-10 text-xs border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl">Nenhum projeto</div>`;
+                    } else {
+                        col.items.forEach(p => {
+                            const card = document.createElement('div');
+                            card.className = "bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm relative group cursor-grab";
+                            card.setAttribute('draggable', 'true'); card.id = `card-${p.id}`;
+                            card.ondragstart = (e) => drag(e, p.id); card.style.borderLeft = `4.5px solid ${getProgressColor(p.progress)}`;
+                            
+                            let overdueTag = isOverdue(p.dueDate, p.progress) ? `<span class="text-[9px] bg-rose-100 text-rose-600 font-bold px-1.5 py-0.5 rounded">⚠️ Atrasado</span>` : '';
+                            let subs = p.subtasks ? p.subtasks.length : 0;
+                            let doneSubs = p.subtasks ? p.subtasks.filter(t=>t.completed).length : 0;
+
+                            card.innerHTML = `
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="flex gap-1">${getPriorityBadge(p.priority)} ${overdueTag}</div>
+                                    <div class="opacity-0 group-hover:opacity-100 flex gap-1"><button onclick="event.stopPropagation(); moveProjectLeft(${p.id}, '${p.area}')" class="text-xs p-0.5 bg-slate-100 rounded">←</button><button onclick="event.stopPropagation(); moveProjectRight(${p.id}, '${p.area}')" class="text-xs p-0.5 bg-slate-100 rounded">→</button></div>
+                                </div>
+                                <h4 class="font-bold text-sm text-slate-800 dark:text-white cursor-pointer hover:text-usp-green" onclick="openEditModal(${p.id})">${p.name}</h4>
+                                <p class="text-[11px] text-slate-400 line-clamp-2 mt-1">${p.description || ''}</p>
+                                <div class="mt-4 pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-[10px] text-slate-400">
+                                    <span>👤 ${p.responsible}</span><span>🗓️ ${formatDateBR(p.dueDate)}</span>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="flex justify-between text-[10px] text-slate-500 mb-1"><span>Progresso ${subs > 0 ? `📋 ${doneSubs}/${subs}` : ''}</span><span>${p.progress}%</span></div>
+                                    <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full ${getProgressBgColorClass(p.progress)}" style="width: ${p.progress}%"></div></div>
+                                </div>
+                            `;
+                            col.list.appendChild(card);
+                        });
+                    }
+                });
+            }
+
+            if (currentView === 'table') {
+                const tbody = document.getElementById('table-view-body'); tbody.innerHTML = '';
+                filtered.forEach(p => {
+                    const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 dark:hover:bg-slate-850 cursor-pointer border-b border-slate-100 dark:border-slate-800";
+                    tr.onclick = () => openEditModal(p.id);
+                    tr.innerHTML = `<td class="p-4">${getPriorityBadge(p.priority)}</td><td class="p-4 font-bold text-slate-800 dark:text-white">${p.name}</td><td class="p-4"><span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs">${p.area}</span></td><td class="p-4 text-xs">${p.responsible}</td><td class="p-4 text-xs">${p.subtasks?p.subtasks.length:0} subetapas</td><td class="p-4 text-xs">${formatDateBR(p.dueDate)}</td><td class="p-4"><span class="font-bold" style="color:${getProgressColor(p.progress)}">${p.progress}%</span></td>`;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            if (currentView === 'metrics') updateCargaTrabalhoChart();
+            updateGlobalStats();
+            updateTeamFilterHighlights();
+        }
+
+        function updateCargaTrabalhoChart() {
+            const container = document.getElementById('chart-workload-container'); if (!container) return; container.innerHTML = '';
+            const stats = {}; supportTeamOptions.forEach(r => stats[r] = { total: 0 });
+            projects.forEach(p => { if (stats[p.responsible]) stats[p.responsible].total++; });
+            Object.entries(stats).forEach(([name, data]) => {
+                const row = document.createElement('div'); row.className = "space-y-1";
+                row.innerHTML = `<div class="flex justify-between text-xs"><span>${name}</span><strong>${data.total} projetos</strong></div><div class="w-full h-2 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden"><div class="bg-usp-green h-full" style="width: ${Math.min(data.total*15, 100)}%"></div></div>`;
+                container.appendChild(row);
+            });
+        }
+
+        function drag(ev, id) { ev.dataTransfer.setData("text/plain", id.toString()); }
+        function allowDrop(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-over'); }
+        function dragLeave(ev) { ev.currentTarget.classList.remove('drag-over'); }
+        function drop(ev, targetArea) {
+            ev.preventDefault(); ev.currentTarget.classList.remove('drag-over');
+            const id = parseInt(ev.dataTransfer.getData("text/plain"));
+            const proj = projects.find(p => p.id === id);
+            if (proj && proj.area !== targetArea) { proj.area = targetArea; logActivity(`Movido para ${targetArea}`); saveAndRender(); }
+        }
+
+        const areaSequence = ['Coordenação', 'Conservas', 'CPDoc', 'Ação Educativa'];
+        function moveProjectLeft(id, currentArea) { const idx = areaSequence.indexOf(currentArea); if (idx > 0) { projects.find(p=>p.id===id).area = areaSequence[idx-1]; saveAndRender(); } }
+        function moveProjectRight(id, currentArea) { const idx = areaSequence.indexOf(currentArea); if (idx < 3) { projects.find(p=>p.id===id).area = areaSequence[idx+1]; saveAndRender(); } }
+
+        function updateGlobalStats() {
+            const total = projects.length; const completed = projects.filter(p => p.progress === 100).length;
+            const avg = total > 0 ? Math.round(projects.reduce((sum, p) => sum + p.progress, 0) / total) : 0;
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-completed').innerText = completed;
+            document.getElementById('stat-avg').innerText = avg + '%';
+            document.getElementById('stat-alerts').innerText = projects.filter(p => isOverdue(p.dueDate, p.progress)).length;
+            if(document.getElementById('svg-chart-progress')) { document.getElementById('svg-chart-progress').setAttribute('stroke-dasharray', `${avg}, 100`); document.getElementById('chart-center-percent').innerText = avg + '%'; }
+        }
+
+        function toggleResponsibleFilter(name) { currentResponsibleFilter = currentResponsibleFilter === name ? null : name; render(); }
+        function applyFilters() { searchQuery = document.getElementById('search-input').value; currentStatusFilter = document.getElementById('status-filter').value; currentPriorityFilter = document.getElementById('priority-filter').value; render(); }
+        function clearAllFilters() { currentResponsibleFilter = null; searchQuery = ''; document.getElementById('search-input').value = ''; render(); }
+
+        function updateTeamFilterHighlights() {
+            const clearBtn = document.getElementById('btn-clear-filters');
+            if (clearBtn) {
+                if (currentResponsibleFilter || searchQuery || currentStatusFilter !== 'all' || currentPriorityFilter !== 'all') {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+            }
+            const indicator = document.getElementById('filter-indicator');
+            if (indicator) indicator.innerText = currentResponsibleFilter || 'Nenhum (Todos)';
+        }
+
+        function buildSupportListCheckboxes(supportArray = []) {
+            const container = document.getElementById('form-support-container'); container.innerHTML = '';
+            supportTeamOptions.forEach(m => {
+                const checked = supportArray.includes(m) ? 'checked' : '';
+                container.innerHTML += `<label class="flex items-center gap-2 p-1 text-xs text-slate-700 dark:text-slate-300"><input type="checkbox" name="support-member" value="${m}" ${checked}><span>${m}</span></label>`;
+            });
+        }
+
+        function renderFormSubtasks() {
+            const container = document.getElementById('form-subtask-list'); container.innerHTML = '';
+            if(tempSubtasks.length === 0) { container.innerHTML = '<span class="text-slate-400 italic">Nenhuma subtarefa</span>'; return; }
+            tempSubtasks.forEach((s, idx) => {
+                container.innerHTML += `<div class="flex justify-between items-center bg-white dark:bg-slate-900 border p-1 text-xs"><label class="flex items-center gap-2 truncate"><input type="checkbox" onchange="toggleSubtaskState(${idx})" ${s.completed?'checked':''}><span class="${s.completed?'line-through text-slate-400':''}">${s.text}</span></label><button type="button" onclick="removeSubtask(${idx})" class="text-rose-500 font-bold">✕</button></div>`;
+            });
+        }
+
+        function addSubtaskFromForm() { const el = document.getElementById('new-subtask-text'); if(!el.value.trim()) return; tempSubtasks.push({ id: Date.now(), text: el.value.trim(), completed: false }); el.value = ''; renderFormSubtasks(); }
+        function removeSubtask(idx) { tempSubtasks.splice(idx,1); renderFormSubtasks(); }
+        function toggleSubtaskState(idx) { tempSubtasks[idx].completed = !tempSubtasks[idx].completed; renderFormSubtasks(); }
+        function autoCalculateProgress() { if(tempSubtasks.length===0) return; const done = tempSubtasks.filter(t=>t.completed).length; const pct = Math.round((done/tempSubtasks.length)*100); document.getElementById('form-progress').value = pct; updateFormProgressValue(pct); }
+
+        function openAddModal(area) {
+            document.getElementById('modal-project-title').innerText = 'Novo Projeto'; document.getElementById('form-id').value = '';
+            document.getElementById('form-name').value = ''; document.getElementById('form-area').value = area;
+            document.getElementById('form-desc').value = ''; document.getElementById('form-progress').value = 0;
+            document.getElementById('form-btn-delete').classList.add('hidden'); buildSupportListCheckboxes([]);
+            tempSubtasks = []; renderFormSubtasks(); updateFormProgressValue(0); modalProject.classList.remove('hidden');
+        }
+
+        function openEditModal(id) {
+            const p = projects.find(item => item.id === id); if (!p) return;
+            document.getElementById('modal-project-title').innerText = 'Ajustar Planejamento'; document.getElementById('form-id').value = p.id;
+            document.getElementById('form-name').value = p.name; document.getElementById('form-area').value = p.area;
+            document.getElementById('form-responsible').value = p.responsible || 'Clebison Santos'; document.getElementById('form-desc').value = p.description || '';
+            document.getElementById('form-progress').value = p.progress; document.getElementById('form-priority').value = p.priority || 'medium';
+            document.getElementById('form-due-date').value = p.dueDate || ''; document.getElementById('form-btn-delete').classList.remove('hidden');
+            buildSupportListCheckboxes(p.support || []); tempSubtasks = p.subtasks ? JSON.parse(JSON.stringify(p.subtasks)) : [];
+            renderFormSubtasks(); updateFormProgressValue(p.progress); modalProject.classList.remove('hidden');
+        }
+
+        function closeProjectModal() { modalProject.classList.add('hidden'); }
+        function updateFormProgressValue(val) { const b = document.getElementById('form-progress-badge'); b.innerText = val + '%'; b.style.backgroundColor = getProgressColor(val); }
+
+        function handleFormSubmit(e) {
+            e.preventDefault(); const id = document.getElementById('form-id').value;
+            const name = document.getElementById('form-name').value.trim(); const area = document.getElementById('form-area').value;
+            const responsible = document.getElementById('form-responsible').value; const description = document.getElementById('form-desc').value.trim();
+            const progress = parseInt(document.getElementById('form-progress').value) || 0; const priority = document.getElementById('form-priority').value;
+            const dueDate = document.getElementById('form-due-date').value;
+            const checkedBoxes = document.querySelectorAll('input[name="support-member"]:checked'); const support = Array.from(checkedBoxes).map(cb => cb.value);
+
+            if (id) {
+                const idx = projects.findIndex(p => p.id === parseInt(id));
+                if (idx !== -1) projects[idx] = { id: parseInt(id), name, area, responsible, description, progress, priority, dueDate, support, subtasks: tempSubtasks };
+            } else {
+                const newId = projects.length > 0 ? Math.max(...projects.map(p => p.id)) + 1 : 1;
+                projects.push({ id: newId, name, area, responsible, description, progress, priority, dueDate, support, subtasks: tempSubtasks });
+            }
+            saveAndRender(); closeProjectModal();
+        }
+
+        async function triggerDeleteProject() {
+            const id = parseInt(document.getElementById('form-id').value); if(isNaN(id)) return;
+            if(await showConfirm('Remover?', 'Isto apagará o projeto.')) { projects = projects.filter(p => p.id !== id); saveAndRender(); closeProjectModal(); }
+        }
+
+        async function confirmResetToDefault() {
+            if(await showConfirm('Restaurar?', 'Substituir por modelos oficiais.')) { projects = JSON.parse(JSON.stringify(defaultProjects)); saveAndRender(); }
+        }
+
+        function exportData() { showToast("Use o banco de dados online ativo."); }
+        function triggerImport() { showToast("Sincronização em nuvem ativa."); }
+
+        // Nova função de salvamento sincronizada em tempo real na nuvem
+        async function saveAndRender() {
+            render(); 
+            try {
+                const { data: cloudData } = await supabase.from('projetos').select('id');
+                if (cloudData) {
+                    const localIds = projects.map(p => p.id);
+                    const toDelete = cloudData.filter(c => !localIds.includes(c.id)).map(c => c.id);
+                    if (toDelete.length > 0) { await supabase.from('projetos').delete().in('id', toDelete); }
+                }
+                if (projects.length > 0) { await supabase.from('projetos').upsert(projects); }
+            } catch (error) {
+                console.error(error); showToast("Erro de sincronização", "error");
+            }
+        }
+
+        // Novo carregador inicial que vai buscar os dados diretamente à nuvem
+        window.onload = async function () {
+            initTheme(); renderActivityLogs();
+            try {
+                const { data, error } = await supabase.from('projetos').select('*').order('id', { ascending: true });
+                if (error) throw error;
+                if (data && data.length > 0) {
+                    projects = data;
+                } else {
+                    projects = JSON.parse(JSON.stringify(defaultProjects));
+                    await supabase.from('projetos').upsert(projects);
+                }
+                render();
+            } catch (err) {
+                console.error(err); showToast("Erro ao conectar ao banco. Usando locais temporários.", "error");
+                projects = [...defaultProjects]; render();
+            }
+        };
+    </script>
+</body>
+</html>
