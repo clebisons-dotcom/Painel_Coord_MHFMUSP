@@ -544,10 +544,9 @@
         const supportTeamOptions = ["Prof. André Mota", "Clebison Santos", "CPDoc (Vaga)", "Técnico em Museologia", "Ação Educativa", "Estagiários", "Equipe CPDoc"];
 
         // --- CONEXÃO COM O BANCO DE DADOS NA NUVEM (SUPABASE) ---
-        const SUPABASE_URL = 'https://axwcdvcuhosnkegovezl.supabase.co';
-        const SUPABASE_ANON_KEY = 'COLE_AQUI_A_SUA_CHAVE_PUBLISHABLE_DO_SUPABASE';
-        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+       const SUPABASE_URL = 'https://axwcdvcuhosnkegovezl.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_VxrWTuCx8FoYetVr2dszPg_ReLsQ6qq';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let projects = [];
         let activityLogs = JSON.parse(localStorage.getItem('mhf_activity_logs')) || [
             { id: Date.now(), text: "Sistema inicializado com sucesso. Dados prontos para análise.", time: new Date().toLocaleTimeString() }
